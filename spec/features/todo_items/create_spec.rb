@@ -23,13 +23,24 @@ describe "Adding todo items" do
 
 	it "displays an error with no content" do
 		visit_todo_list(todo_list)
-		click_button "New Todo Item"
+		click_link "New Todo Item"
 		fill_in "Content", with: ""
 		click_button "Save"
 		within "div.flash" do
-			expect(page).to have_content("There was a problem adding that todo list item.")
+			expect(page).to have_content("There was a problem adding that todo_list item.")
 		end
 		expect(page).to have_content("Content can't be blank")
+	end
+
+	it "displays an error with content less than 2 characters" do
+		visit_todo_list(todo_list)
+		click_link "New Todo Item"
+		fill_in "Content", with: "Hi"
+		click_button "Save"
+		within "div.flash" do
+			expect(page).to have_content("There was a problem adding that todo_list item.")
+		end
+		expect(page).to have_content("Content is too short")
 	end
 
 end
